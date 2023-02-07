@@ -40,11 +40,15 @@ function swap(i, j, arr){
     arr[j] = temp;
 }
 
+function randomMove(arr){
+    let r1 = floor(random(cols));
+    let r2 = floor(random(rows));
+    swap(r1, r2, arr);
+}
+
 function simpleShuffle(arr){
     for(let i = 0; i < 100; i++){
-        let r1 = floor(random(0, arr.length));
-        let r2 = floor(random(0, arr.length));
-        swap(r1, r2, arr);
+        randomMove(arr);
     }
 }
 
@@ -69,5 +73,31 @@ function draw(){
             noFill();
             rect(x, y, w, h);
         }
+    }
+}
+
+function move(i, j, arr){
+    let blank = findBlank();
+    let blankCol = blank % cols;
+    let blankRow = floor(blank / rows);
+
+    if(isNeighbor(i, j, blankCol, blankRow)){
+        swap(blank, i + j * cols, arr);
+    }
+}
+
+function isNeighbor(i, j, x, y){
+    if(i!==x && j!==y){
+        return false;
+    }
+    if(abs(i-x) == 1 || abs(j-y) == 1){
+        return true;
+    }
+    return false;
+}
+
+function findBlank(){
+    for(let i = 0; i < board.length; i++){
+        if(board[i] == -1) return i;
     }
 }
