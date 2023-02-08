@@ -1,6 +1,6 @@
 let w, h;
-let cols = 4;
-let rows = 4;
+let cols = 5;
+let rows = 5;
 let tiles = []; 
 let board = [];
 let blankSpot = -1;
@@ -43,7 +43,7 @@ function swap(i, j, arr){
 function randomMove(arr){
     let r1 = floor(random(cols));
     let r2 = floor(random(rows));
-    swap(r1, r2, arr);
+    move(r1, r2, arr);
 }
 
 function simpleShuffle(arr){
@@ -52,7 +52,23 @@ function simpleShuffle(arr){
     }
 }
 
+function mousePressed(){
+    let i = floor(mouseX/w);
+    let j = floor(mouseY/h);
+    move(i,j,board);
+}
+
+function isSolved(){
+    for(let i = 0; i<board.length-1; i++){
+        if(board[i] !== tiles[i].index){
+            return false;
+        }
+    }
+    return true;
+}
+
 function draw(){
+    background(0);
     for(let i = 0; i < cols; i++){
         for(let j = 0; j < rows; j++){
             let index = i + j * cols;
@@ -60,19 +76,14 @@ function draw(){
             let y = j * h;
             let tileIndex = board[index];
             if(tileIndex > -1){
-            let img = tiles[tileIndex].img;
-            image(img, x, y, w, h);
-        }
+                let img = tiles[tileIndex].img;
+                image(img, x, y, w-5, h-5);
+            }
         }
     }
-    for(let i = 0; i < cols; i++){
-        for(let j = 0; j < rows; j++){
-            let x = i * w;
-            let y = j * h;
-            storkeWeight(2);
-            noFill();
-            rect(x, y, w, h);
-        }
+
+    if(isSolved()){
+        alert("Udało ci się!");
     }
 }
 
